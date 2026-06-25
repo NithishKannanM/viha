@@ -1,0 +1,6 @@
+{
+  "name": "Viha Spiritual Boutique",
+  "description": "A neo-traditional spiritual e-commerce experience showcasing artisan pooja products, sacred temple jewelry, traditional garments, and an order delivery tracker.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

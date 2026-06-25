@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Libre Caslon Text", "Playfair Display", Georgia, serif;
+  --font-sans: "Hanken Grotesk", "Inter", sans-serif;
+  
+  --color-brand-maroon: #5c181a;
+  --color-brand-maroon-dark: #3f090b;
+  --color-brand-gold: #B8893D;
+  --color-brand-gold-light: #f5e4c3;
+  --color-brand-cream: #fdf9f1;
+  --color-brand-cream-dark: #f1ede6;
+  --color-brand-charcoal: #2D2D2D;
+  --color-brand-paper: #FDFBF7;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  --animate-fade-in: fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body {
+  background-color: var(--color-brand-cream);
+  color: var(--color-brand-charcoal);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom fade utility */
+.animate-fade-in {
+  animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* === Green Theme Override (client preview toggle) === */
+.theme-green {
+  --color-brand-maroon: #2d6b30;
+  --color-brand-maroon-dark: #1a4520;
+  --color-brand-gold: #c9a227;
+  --color-brand-gold-light: #f5edcc;
+  --color-brand-cream: #f4faf4;
+  --color-brand-cream-dark: #e5f0e5;
+  --color-brand-paper: #f8fdf8;
+}
+
+.theme-green body {
+  background-color: var(--color-brand-cream);
+}
