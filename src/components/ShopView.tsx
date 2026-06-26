@@ -64,18 +64,18 @@ export default function ShopView({
   };
 
   return (
-    <div className="bg-brand-cream-dark/5 py-12 px-4 md:px-12 max-w-7xl mx-auto space-y-10 min-h-screen font-sans">
-      
-      {/* Toast Alert */}
+    <div className="bg-brand-cream-dark/5 py-8 md:py-12 px-4 md:px-12 max-w-7xl mx-auto space-y-6 md:space-y-10 min-h-screen font-sans">
+
+      {/* Toast Alert — positioned above mobile bottom nav */}
       {successToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-brand-maroon border border-brand-gold text-brand-cream py-3.5 px-6 rounded-xs shadow-xl flex items-center justify-between gap-3 text-xs uppercase tracking-wider font-semibold animate-slide-up">
-          <Check size={16} className="text-brand-gold" />
-          <span>{successToast}</span>
-          <button 
+        <div className="fixed bottom-20 lg:bottom-6 right-4 left-4 sm:left-auto sm:right-6 sm:max-w-sm z-50 bg-brand-maroon border border-brand-gold text-brand-cream py-3.5 px-5 rounded-xs shadow-xl flex items-center justify-between gap-3 text-xs uppercase tracking-wider font-semibold animate-slide-up">
+          <Check size={16} className="text-brand-gold shrink-0" />
+          <span className="flex-1 line-clamp-1">{successToast}</span>
+          <button
             onClick={() => onNavigate('cart')}
-            className="ml-3 hover:underline text-brand-gold font-bold flex items-center gap-1 text-[11px]"
+            className="hover:underline text-brand-gold font-bold flex items-center gap-1 text-[11px] shrink-0"
           >
-            Go to checkout <ArrowRight size={12} />
+            Checkout <ArrowRight size={12} />
           </button>
         </div>
       )}
@@ -103,8 +103,27 @@ export default function ShopView({
         </div>
       </div>
 
-      {/* Mobile filter toggle */}
-      <div className="lg:hidden">
+      {/* Mobile: horizontal pill category scroll */}
+      <div className="lg:hidden -mx-4 px-4">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide touch-scroll pb-2 snap-x">
+          {PRODUCT_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => onSelectCategory(cat.id)}
+              className={`flex-shrink-0 snap-start px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wide border transition-all cursor-pointer whitespace-nowrap min-h-[36px] ${
+                selectedCategory === cat.id
+                  ? 'bg-brand-maroon text-white border-brand-maroon'
+                  : 'bg-brand-paper text-brand-charcoal/70 border-brand-cream-dark hover:border-brand-maroon'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop mobile filter toggle */}
+      <div className="hidden">
         <button
           onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
           className="flex items-center gap-2 px-4 py-2.5 border border-brand-cream-dark bg-brand-paper text-xs font-bold uppercase tracking-widest cursor-pointer rounded-xs w-full justify-between hover:border-brand-maroon transition-colors"
@@ -168,32 +187,33 @@ export default function ShopView({
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {filteredProducts.map((p) => {
                 const isRestricted = p.restrictedRegions?.includes(currentRegion);
                 return (
-                  <div 
+                  <div
                     key={p.id}
-                    className={`bg-brand-paper border border-t-2 rounded-xs group flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md transition-all relative ${
+                    className={`bg-brand-paper border border-t-2 rounded-sm group flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md transition-all relative ${
                       isRestricted
                         ? 'border-red-300 border-t-red-300 bg-red-50/10'
                         : 'border-brand-cream-dark border-t-transparent hover:border-t-brand-gold'
                     }`}
                   >
                     {/* Item Image */}
-                    <div className="relative aspect-[4/3] bg-brand-cream overflow-hidden flex items-center justify-center">
+                    <div className="relative aspect-square sm:aspect-[4/3] bg-brand-cream overflow-hidden flex items-center justify-center">
                       <img
                         src={p.imageUrl}
                         alt={p.name}
-                        className="w-full h-full object-contain mix-blend-multiply p-2 group-hover:scale-101 transition-transform duration-500 cursor-pointer"
+                        className="w-full h-full object-contain mix-blend-multiply p-2 group-hover:scale-105 transition-transform duration-500 cursor-pointer"
                         onClick={() => onViewProduct(p)}
+                        loading="lazy"
                       />
                       {isRestricted ? (
-                        <span className="absolute top-3 left-3 bg-[#4d1012] text-white text-[9.5px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-sm border border-red-500/30 flex items-center gap-1 shadow-md">
-                          <ShieldAlert size={11} className="text-red-400 shrink-0" /> Blocked
+                        <span className="absolute top-2 left-2 bg-[#4d1012] text-white text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm border border-red-500/30 flex items-center gap-0.5 shadow-md">
+                          <ShieldAlert size={9} className="text-red-400 shrink-0" /> Blocked
                         </span>
                       ) : p.rating && p.rating >= 4.9 ? (
-                        <span className="absolute top-3 left-3 bg-brand-maroon text-brand-cream text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm border border-brand-gold/30">
+                        <span className="absolute top-2 left-2 bg-brand-maroon text-brand-cream text-[8px] md:text-[10px] font-bold uppercase tracking-widest px-1.5 md:px-2 py-0.5 rounded-sm border border-brand-gold/30">
                           Top Rated
                         </span>
                       ) : null}
@@ -203,72 +223,73 @@ export default function ShopView({
                           e.stopPropagation();
                           onToggleWishlist(p);
                         }}
-                        className="absolute top-3 right-3 p-2 bg-[#FDFBF7]/90 hover:bg-[#FDFBF7] text-brand-maroon rounded-full border border-brand-cream-dark shadow-xs transition-transform hover:scale-110 cursor-pointer z-10"
-                        title={wishlist.some((item) => item.id === p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                        className="absolute top-2 right-2 w-8 h-8 bg-[#FDFBF7]/90 hover:bg-[#FDFBF7] text-brand-maroon rounded-full border border-brand-cream-dark shadow-xs flex items-center justify-center cursor-pointer z-10 min-w-[32px] min-h-[32px]"
+                        aria-label={wishlist.some((item) => item.id === p.id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
                       >
-                        <Heart 
-                          size={14} 
-                          className={wishlist.some((item) => item.id === p.id) ? "fill-brand-maroon text-brand-maroon" : "text-brand-maroon"} 
+                        <Heart
+                          size={13}
+                          className={wishlist.some((item) => item.id === p.id) ? 'fill-brand-maroon text-brand-maroon' : 'text-brand-maroon'}
                         />
                       </button>
                     </div>
 
                     {/* Title & Body */}
-                    <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                      <div className="space-y-1">
+                    <div className="p-2.5 sm:p-3 md:p-4 flex-1 flex flex-col justify-between space-y-2">
+                      <div className="space-y-0.5 md:space-y-1">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] text-brand-gold uppercase tracking-widest font-bold">
-                            {p.category} Essential
+                          <span className="text-[8px] md:text-[10px] text-brand-gold uppercase tracking-widest font-bold truncate pr-1">
+                            {p.category}
                           </span>
                           {p.rating && (
-                            <div className="flex items-center text-brand-gold text-[10px] font-bold gap-0.5">
-                              <Star size={10} className="fill-brand-gold text-brand-gold" />
+                            <div className="flex items-center text-brand-gold text-[9px] font-bold gap-0.5 shrink-0">
+                              <Star size={9} className="fill-brand-gold text-brand-gold" />
                               <span>{p.rating}</span>
                             </div>
                           )}
                         </div>
-                        <h3 
+                        <h3
                           onClick={() => onViewProduct(p)}
-                          className="text-sm font-serif font-semibold text-brand-maroon hover:text-brand-gold cursor-pointer leading-tight"
+                          className="text-[12px] md:text-sm font-serif font-semibold text-brand-maroon hover:text-brand-gold cursor-pointer leading-tight line-clamp-2"
                           style={{ fontFamily: 'Libre Caslon Text, serif' }}
                         >
                           {p.name}
                         </h3>
-                        <p className="text-xs text-brand-charcoal/70 line-clamp-2 leading-relaxed">
+                        <p className="text-[10px] md:text-xs text-brand-charcoal/70 line-clamp-2 leading-relaxed hidden sm:block">
                           {p.description}
                         </p>
-                        
+
                         {isRestricted && (
-                          <div className="text-[10px] text-red-800 bg-red-100/50 border border-red-200/40 p-2 rounded-xs flex items-start gap-1 font-sans">
-                            <ShieldAlert size={12} className="text-red-700 shrink-0 mt-0.5" />
-                            <span>Undeliverable to {activeRegionObj.name} due to international biological quarantine restrictions.</span>
+                          <div className="text-[9px] text-red-800 bg-red-100/50 border border-red-200/40 p-1.5 rounded-xs flex items-start gap-1 font-sans">
+                            <ShieldAlert size={10} className="text-red-700 shrink-0 mt-0.5" />
+                            <span className="line-clamp-2">Undeliverable to {activeRegionObj.name}.</span>
                           </div>
                         )}
                       </div>
 
-                      {/* Pricing & Cart submission */}
+                      {/* Pricing & Cart */}
                       <div className="flex items-center justify-between pt-2 border-t border-brand-cream-dark">
-                        <span className="text-sm font-semibold text-brand-maroon">
+                        <span className="text-[12px] md:text-sm font-semibold text-brand-maroon">
                           {formatPrice(p.price)}
                         </span>
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1">
                           <button
                             onClick={() => onViewProduct(p)}
-                            className="p-1.5 bg-brand-cream hover:bg-brand-cream-dark text-brand-charcoal rounded-xs text-[10px] uppercase font-bold cursor-pointer"
-                            title="Quick Details"
+                            className="p-1.5 bg-brand-cream hover:bg-brand-cream-dark text-brand-charcoal rounded-xs cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
+                            aria-label="View details"
                           >
-                            <Info size={14} />
+                            <Info size={13} />
                           </button>
                           <button
                             disabled={isRestricted}
                             onClick={() => triggerAddToCart(p)}
-                            className={`px-3 py-1.5 text-white rounded-xs text-[10px] uppercase font-bold tracking-widest flex items-center gap-1 cursor-pointer transition-all ${
-                              isRestricted 
-                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50' 
+                            className={`px-2 sm:px-3 py-1.5 text-white rounded-xs text-[9px] md:text-[10px] uppercase font-bold tracking-widest flex items-center gap-0.5 cursor-pointer transition-all min-h-[28px] ${
+                              isRestricted
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                                 : 'bg-brand-maroon hover:bg-brand-maroon-dark'
                             }`}
                           >
-                            <ShoppingBag size={10} /> {isRestricted ? 'Restricted' : 'Add'}
+                            <ShoppingBag size={9} />
+                            <span className="hidden sm:inline">{isRestricted ? 'N/A' : 'Add'}</span>
                           </button>
                         </div>
                       </div>

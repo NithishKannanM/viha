@@ -204,7 +204,7 @@ export default function BeautyView({
       {/* ─────────────────────────────────────────────────────
           1. HERO BANNER
       ───────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[500px] h-[580px] md:h-[700px] bg-brand-maroon-dark flex items-end md:items-center overflow-hidden">
+      <section className="relative w-full min-h-[460px] h-[520px] md:h-[700px] bg-brand-maroon-dark flex items-end md:items-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -230,24 +230,23 @@ export default function BeautyView({
           <span className="text-brand-gold">Beauty &amp; Wellness</span>
         </nav>
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pb-14 md:pb-0">
-          <span className="block text-[10px] uppercase tracking-[0.2em] text-brand-gold font-bold mb-4">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-5 sm:px-6 md:px-12 pb-16 md:pb-0">
+          <span className="block text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-brand-gold font-bold mb-3 md:mb-4">
             VIHA BEAUTY &amp; WELLNESS
           </span>
           <h1
-            className="text-4xl sm:text-5xl md:text-7xl text-brand-cream font-serif font-black tracking-tight leading-[1.05] max-w-4xl mb-5"
+            className="text-3xl sm:text-5xl md:text-7xl text-brand-cream font-serif font-black tracking-tight leading-[1.05] max-w-4xl mb-4 md:mb-5"
             style={{ fontFamily: 'Libre Caslon Text, serif' }}
           >
             Ancestral Beauty,<br className="hidden md:block" /> Timeless Ritual.
           </h1>
-          <p className="text-sm md:text-base text-brand-cream/70 max-w-xl mb-8 leading-relaxed">
-            Plant-based formulations rooted in five thousand years of Ayurvedic wisdom. Each
-            product carries the knowledge of generations, prepared with reverence.
+          <p className="text-[13px] sm:text-sm md:text-base text-brand-cream/70 max-w-xl mb-6 md:mb-8 leading-relaxed">
+            Plant-based formulations rooted in five thousand years of Ayurvedic wisdom.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={goToBeautyShop}
-              className="px-8 py-3.5 bg-brand-maroon hover:bg-brand-maroon-dark text-white text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-brand-maroon hover:bg-brand-maroon-dark text-white text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer min-h-[50px] sm:min-h-[44px]"
             >
               Explore Collection
             </button>
@@ -255,7 +254,7 @@ export default function BeautyView({
               onClick={() => {
                 document.getElementById('beauty-journal')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-8 py-3.5 bg-transparent hover:bg-white/10 text-white text-[11px] font-bold uppercase tracking-widest transition-all border border-white/40 cursor-pointer"
+              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-transparent hover:bg-white/10 text-white text-[11px] font-bold uppercase tracking-widest transition-all border border-white/40 cursor-pointer min-h-[50px] sm:min-h-[44px]"
             >
               Beauty Journal
             </button>
@@ -263,15 +262,22 @@ export default function BeautyView({
         </div>
 
         {/* Trust strip at bottom of hero */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-sm px-6 md:px-12 py-3">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-6 md:gap-10 text-[10px] uppercase tracking-widest text-brand-cream/60 font-semibold">
+        <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/10 bg-black/40 backdrop-blur-sm py-3 overflow-hidden">
+          {/* Mobile: scroll */}
+          <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide px-5 md:hidden">
+            {['100% Natural', 'No Parabens', 'Cruelty Free', 'Ayurvedic'].map((t) => (
+              <span key={t} className="flex-shrink-0 text-[9px] uppercase tracking-widest text-brand-cream/60 font-semibold whitespace-nowrap">{t}</span>
+            ))}
+          </div>
+          {/* Desktop: flex wrap */}
+          <div className="hidden md:flex max-w-7xl mx-auto px-12 items-center justify-center gap-10 text-[10px] uppercase tracking-widest text-brand-cream/60 font-semibold">
             <span>100% Natural Ingredients</span>
             <span className="text-brand-gold/40">|</span>
             <span>No Parabens or SLS</span>
             <span className="text-brand-gold/40">|</span>
             <span>Cruelty Free</span>
-            <span className="text-brand-gold/40 hidden md:inline">|</span>
-            <span className="hidden md:inline">Ayurvedic Formulations</span>
+            <span className="text-brand-gold/40">|</span>
+            <span>Ayurvedic Formulations</span>
           </div>
         </div>
       </section>
@@ -322,14 +328,14 @@ export default function BeautyView({
       {/* ─────────────────────────────────────────────────────
           3. FEATURED COLLECTIONS
       ───────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-20 px-6 md:px-12 bg-brand-section-alt border-t border-brand-cream-dark">
+      <section className="py-12 md:py-20 bg-brand-section-alt border-t border-brand-cream-dark">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12 px-5 sm:px-6 md:px-12">
             <span className="block text-[10px] uppercase tracking-widest text-brand-gold font-bold mb-3">
               CURATED FOR YOU
             </span>
             <h2
-              className="text-3xl md:text-4xl font-serif text-brand-maroon font-black"
+              className="text-2xl md:text-4xl font-serif text-brand-maroon font-black"
               style={{ fontFamily: 'Libre Caslon Text, serif' }}
             >
               Featured Collections
@@ -337,7 +343,40 @@ export default function BeautyView({
             <SectionOrnament />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Mobile: horizontal scroll */}
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide touch-scroll snap-x snap-mandatory pb-4 px-5 sm:px-6 md:hidden">
+            {COLLECTIONS.map((col) => (
+              <div
+                key={col.label}
+                onClick={goToBeautyShop}
+                className="flex-shrink-0 w-[68vw] max-w-[220px] snap-start group cursor-pointer"
+              >
+                <div className="aspect-[3/4] overflow-hidden bg-brand-paper border border-brand-cream-dark rounded-sm relative">
+                  <img
+                    src={col.image}
+                    alt={col.label}
+                    className="w-full h-full object-cover brightness-90"
+                    loading="lazy"
+                  />
+                  <span className="absolute top-3 left-3 bg-brand-paper/90 text-[9px] font-bold uppercase tracking-widest text-brand-gold px-2 py-1">
+                    {col.count}
+                  </span>
+                </div>
+                <div className="pt-3 space-y-1">
+                  <h3 className="font-serif font-semibold text-brand-maroon text-sm" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
+                    {col.label}
+                  </h3>
+                  <p className="text-[10px] text-brand-muted leading-relaxed line-clamp-2">{col.desc}</p>
+                  <span className="text-[10px] text-brand-maroon font-bold flex items-center gap-1">
+                    Shop Now <ArrowRight size={10} />
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: 3-col grid */}
+          <div className="hidden md:grid grid-cols-3 gap-6 px-12">
             {COLLECTIONS.map((col) => (
               <div
                 key={col.label}
@@ -356,10 +395,7 @@ export default function BeautyView({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="pt-4 space-y-1.5">
-                  <h3
-                    className="font-serif font-semibold text-brand-maroon group-hover:text-brand-gold transition-colors"
-                    style={{ fontFamily: 'Libre Caslon Text, serif' }}
-                  >
+                  <h3 className="font-serif font-semibold text-brand-maroon group-hover:text-brand-gold transition-colors" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
                     {col.label}
                   </h3>
                   <p className="text-xs text-brand-muted leading-relaxed">{col.desc}</p>
@@ -403,42 +439,43 @@ export default function BeautyView({
           </div>
 
           {beautyProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
               {beautyProducts.map((product) => (
                 <div
                   key={product.id}
                   onClick={() => onViewProduct(product)}
-                  className="bg-brand-cream border border-brand-cream-dark border-t-2 border-t-transparent hover:border-t-brand-gold rounded-xs overflow-hidden cursor-pointer group hover:shadow-md transition-all flex flex-col"
+                  className="bg-brand-cream border border-brand-cream-dark border-t-2 border-t-transparent hover:border-t-brand-gold rounded-sm overflow-hidden cursor-pointer group hover:shadow-md transition-all flex flex-col"
                 >
-                  <div className="aspect-[4/3] overflow-hidden bg-brand-cream flex items-center justify-center relative">
+                  <div className="aspect-square sm:aspect-[4/3] overflow-hidden bg-brand-cream flex items-center justify-center relative">
                     <img
                       src={product.imageUrl}
                       alt={product.name}
-                      className="w-full h-full object-contain mix-blend-multiply p-3 group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain mix-blend-multiply p-2 group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                     {product.rating && product.rating >= 4.9 && (
-                      <span className="absolute top-2 left-2 bg-brand-maroon text-brand-cream text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">
+                      <span className="absolute top-2 left-2 bg-brand-maroon text-brand-cream text-[8px] md:text-[9px] font-bold uppercase tracking-widest px-1.5 md:px-2 py-0.5">
                         Top Rated
                       </span>
                     )}
                   </div>
-                  <div className="p-4 flex flex-col items-center text-center flex-1 justify-between space-y-2">
+                  <div className="p-2.5 sm:p-3 md:p-4 flex flex-col items-center text-center flex-1 justify-between space-y-1.5 md:space-y-2">
                     <div>
-                      <span className="text-[9px] text-brand-gold uppercase tracking-widest font-bold mb-1 block">
-                        {product.subcategory || 'Ayurveda & Herbal'}
+                      <span className="text-[8px] md:text-[9px] text-brand-gold uppercase tracking-widest font-bold mb-0.5 block">
+                        {product.subcategory || 'Ayurveda'}
                       </span>
                       <h4
-                        className="text-sm font-serif font-semibold text-brand-maroon leading-tight"
+                        className="text-[12px] md:text-sm font-serif font-semibold text-brand-maroon leading-tight line-clamp-2"
                         style={{ fontFamily: 'Libre Caslon Text, serif' }}
                       >
                         {product.name}
                       </h4>
                       {product.rating && (
-                        <div className="flex items-center justify-center gap-0.5 mt-1.5">
+                        <div className="flex items-center justify-center gap-0.5 mt-1">
                           {[1, 2, 3, 4, 5].map((s) => (
                             <Star
                               key={s}
-                              size={10}
+                              size={9}
                               className={
                                 s <= Math.round(product.rating!)
                                   ? 'fill-brand-gold text-brand-gold'
@@ -446,23 +483,22 @@ export default function BeautyView({
                               }
                             />
                           ))}
-                          <span className="text-[9px] text-brand-muted ml-1">{product.rating}</span>
                         </div>
                       )}
                     </div>
                     <div className="w-full pt-2 border-t border-brand-cream-dark flex items-center justify-between">
-                      <span className="text-sm font-semibold text-brand-maroon">
+                      <span className="text-[12px] md:text-sm font-semibold text-brand-maroon">
                         ₹{product.price.toLocaleString('en-IN')}
                       </span>
                       <button
                         onClick={(e) => handleAdd(e, product)}
-                        className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-colors cursor-pointer rounded-xs ${
+                        className={`px-2 sm:px-3 py-1.5 text-[8px] md:text-[9px] font-bold uppercase tracking-widest transition-colors cursor-pointer rounded-xs min-h-[28px] ${
                           addedId === product.id
                             ? 'bg-brand-gold text-white'
                             : 'bg-brand-maroon hover:bg-brand-maroon-dark text-white'
                         }`}
                       >
-                        {addedId === product.id ? 'Added ✓' : 'Add'}
+                        {addedId === product.id ? '✓' : 'Add'}
                       </button>
                     </div>
                   </div>

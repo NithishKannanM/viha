@@ -8,6 +8,7 @@ import TrackerView from './components/TrackerView';
 import AccountView from './components/AccountView';
 import ProductDetailView from './components/ProductDetailView';
 import BeautyView from './components/BeautyView';
+import MobileBottomNav from './components/MobileBottomNav';
 
 import { Product, CartItem, Order } from './types';
 import { PRODUCTS, MOCK_ORDERS } from './data';
@@ -44,6 +45,7 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleToggleWishlist = (product: Product) => {
     setWishlist((prev) => {
@@ -126,9 +128,11 @@ export default function App() {
         currentRegion={currentRegion}
         onRegionChange={handleRegionChange}
         onViewProduct={handleViewProduct}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
       />
 
-      <main className="flex-grow">
+      <main className="flex-grow pb-14 lg:pb-0">
         {currentView === 'home' && (
           <HomeView
             onNavigate={handleNavigate}
@@ -200,6 +204,17 @@ export default function App() {
       </main>
 
       <Footer onNavigate={handleNavigate} onSelectCategory={setSelectedCategory} />
+
+      <MobileBottomNav
+        currentView={currentView}
+        cartCount={cart.reduce((acc, item) => acc + item.quantity, 0)}
+        wishlistCount={wishlist.length}
+        onNavigate={handleNavigate}
+        onOpenCart={() => setCartOpen(true)}
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenWishlist={() => setWishlistOpen(true)}
+        onOpenMenu={() => setMobileMenuOpen(true)}
+      />
     </div>
   );
 }

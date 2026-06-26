@@ -8,7 +8,7 @@ interface FooterProps {
 
 export default function Footer({ onNavigate, onSelectCategory }: FooterProps) {
   return (
-    <footer className="bg-brand-cream border-t border-brand-cream-dark px-4 md:px-12 py-12 text-brand-charcoal font-sans">
+    <footer className="bg-brand-cream border-t border-brand-cream-dark px-4 md:px-12 py-10 md:py-12 text-brand-charcoal font-sans">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Brand Column */}

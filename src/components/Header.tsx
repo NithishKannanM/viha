@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Heart, User, ShoppingBag, X, Trash2, ArrowRight, ShieldAlert, CheckCircle2, Globe, HelpCircle, Package, Lock, Menu } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Heart, User, ShoppingBag, X, ArrowRight, ShieldAlert, CheckCircle2, Globe, HelpCircle, Package, Lock, Menu, Sparkles } from 'lucide-react';
 import Logo from './Logo';
 import { CartItem, Product } from '../types';
 import { PRODUCTS, REGIONS, Region } from '../data';
@@ -22,6 +23,8 @@ interface HeaderProps {
   currentRegion: string;
   onRegionChange: (regionId: string) => void;
   onViewProduct: (product: Product) => void;
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
 }
 
 const MEGA_MENU_DATA: Record<string, {
@@ -225,12 +228,13 @@ export default function Header({
   onAddToCart,
   currentRegion,
   onRegionChange,
-  onViewProduct
+  onViewProduct,
+  mobileMenuOpen,
+  setMobileMenuOpen,
 }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [regionDropdownOpen, setRegionDropdownOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showRegionPrompt, setShowRegionPrompt] = useState(() => {
     return !localStorage.getItem('preferred_region');
   });
@@ -552,69 +556,140 @@ export default function Header({
         )}
       </header>
 
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileMenuOpen(false)} />
-          <div className="fixed inset-y-0 left-0 w-72 bg-brand-cream flex flex-col shadow-2xl animate-slide-in-left">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-brand-cream-dark bg-brand-paper">
-              <Logo size="sm" />
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 hover:bg-brand-cream-dark rounded-full cursor-pointer transition-colors"
-                aria-label="Close menu"
-              >
-                <X size={20} />
-              </button>
-            </div>
+      {/* Mobile Menu Drawer — full-screen with framer-motion */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <motion.div
+              className="fixed inset-y-0 left-0 w-full max-w-[320px] bg-brand-cream flex flex-col shadow-2xl"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280, mass: 0.8 }}
+            >
+              {/* Drawer header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-brand-cream-dark bg-brand-paper flex-shrink-0">
+                <Logo size="sm" />
+                <motion.button
+                  onClick={() => setMobileMenuOpen(false)}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-9 h-9 flex items-center justify-center hover:bg-brand-cream-dark rounded-full cursor-pointer transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </motion.button>
+              </div>
 
-            <div className="flex items-center gap-2 px-5 py-3 bg-brand-maroon/5 border-b border-brand-cream-dark">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold">Browse Categories</span>
-            </div>
+              {/* Scrollable nav body */}
+              <nav className="flex-1 overflow-y-auto" aria-label="Mobile navigation">
 
-            <nav className="flex-1 overflow-y-auto py-1" aria-label="Mobile navigation">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    if (cat.id === 'beauty') {
-                      onNavigate('beauty');
-                    } else {
+                {/* Section 1: Main Shop */}
+                <div className="px-4 pt-4 pb-1">
+                  <span className="text-[9px] uppercase tracking-[0.18em] font-bold text-brand-gold block px-2 mb-2">
+                    Shop Collections
+                  </span>
+                </div>
+                {[
+                  { id: 'all', label: 'All Essentials' },
+                  { id: 'spiritual-pooja', label: 'Spiritual & Pooja' },
+                  { id: 'ayurveda-herbal', label: 'Ayurveda & Herbal' },
+                  { id: 'beauty', label: 'Beauty & Wellness', highlight: true },
+                  { id: 'jewellery-fashion', label: 'Jewellery & Fashion' },
+                  { id: 'home-living', label: 'Home & Living' },
+                  { id: 'food-organic', label: 'Food & Organic' },
+                ].map((cat) => (
+                  <motion.button
+                    key={cat.id}
+                    whileTap={{ scale: 0.98, backgroundColor: 'rgba(15,90,67,0.08)' }}
+                    onClick={() => {
+                      if (cat.id === 'beauty') {
+                        onNavigate('beauty');
+                      } else {
+                        onSelectCategory(cat.id);
+                        onNavigate('shop');
+                      }
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-6 py-3.5 text-sm font-medium transition-colors cursor-pointer min-h-[50px] flex items-center justify-between group ${
+                      (cat as any).highlight
+                        ? 'text-brand-maroon font-semibold'
+                        : 'text-brand-charcoal/85 hover:text-brand-maroon'
+                    }`}
+                  >
+                    <span>{cat.label}</span>
+                    {(cat as any).highlight && (
+                      <span className="text-[8px] uppercase tracking-widest font-bold text-white bg-brand-maroon px-2 py-0.5 rounded-sm flex items-center gap-0.5">
+                        <Sparkles size={8} /> Featured
+                      </span>
+                    )}
+                  </motion.button>
+                ))}
+
+                {/* Section 2: More */}
+                <div className="px-4 pt-5 pb-1 border-t border-brand-cream-dark mt-2">
+                  <span className="text-[9px] uppercase tracking-[0.18em] font-bold text-brand-gold block px-2 mb-2">
+                    More Categories
+                  </span>
+                </div>
+                {[
+                  { id: 'kids-baby', label: 'Kids & Baby' },
+                  { id: 'books-stationery', label: 'Books & Stationery' },
+                  { id: 'bags-pouches', label: 'Bags & Pouches' },
+                  { id: 'fashion-grooming', label: 'Fashion & Grooming' },
+                  { id: 'new-arrivals', label: 'New Arrivals ✦' },
+                ].map((cat) => (
+                  <motion.button
+                    key={cat.id}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
                       onSelectCategory(cat.id);
                       onNavigate('shop');
-                    }
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-colors border-b border-brand-cream-dark/40 cursor-pointer min-h-[44px] flex items-center ${
-                    cat.id === 'new-arrivals'
-                      ? 'text-brand-gold font-bold'
-                      : cat.id === 'beauty'
-                        ? 'text-brand-maroon font-semibold hover:bg-brand-cream-dark/40'
-                        : 'text-brand-charcoal hover:bg-brand-cream-dark/40 hover:text-brand-maroon'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </nav>
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-6 py-3.5 text-sm font-medium transition-colors cursor-pointer min-h-[50px] flex items-center ${
+                      cat.id === 'new-arrivals'
+                        ? 'text-brand-gold font-bold'
+                        : 'text-brand-charcoal/85 hover:text-brand-maroon'
+                    }`}
+                  >
+                    {cat.label}
+                  </motion.button>
+                ))}
+              </nav>
 
-            <div className="p-5 border-t border-brand-cream-dark bg-brand-paper space-y-3">
-              <button
-                onClick={() => { onNavigate('account'); setMobileMenuOpen(false); }}
-                className="w-full flex items-center gap-3 py-2.5 px-3 text-sm text-brand-charcoal hover:text-brand-maroon transition-colors cursor-pointer"
-              >
-                <User size={16} /> My Account
-              </button>
-              <button
-                onClick={() => { setRegionDropdownOpen(true); setMobileMenuOpen(false); }}
-                className="w-full flex items-center gap-3 py-2.5 px-3 text-sm text-brand-charcoal hover:text-brand-maroon transition-colors cursor-pointer"
-              >
-                <Globe size={16} /> {activeRegionObj.flag} {activeRegionObj.name}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              {/* Drawer footer */}
+              <div className="p-4 border-t border-brand-cream-dark bg-brand-paper space-y-1 flex-shrink-0">
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => { onNavigate('account'); setMobileMenuOpen(false); }}
+                  className="w-full flex items-center gap-3 py-3 px-4 text-sm text-brand-charcoal hover:text-brand-maroon hover:bg-brand-cream-dark/30 rounded-xs transition-colors cursor-pointer min-h-[48px]"
+                >
+                  <User size={16} strokeWidth={1.5} />
+                  <span>My Account</span>
+                </motion.button>
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => { setRegionDropdownOpen(true); setMobileMenuOpen(false); }}
+                  className="w-full flex items-center gap-3 py-3 px-4 text-sm text-brand-charcoal hover:text-brand-maroon hover:bg-brand-cream-dark/30 rounded-xs transition-colors cursor-pointer min-h-[48px]"
+                >
+                  <Globe size={16} strokeWidth={1.5} />
+                  <span>{activeRegionObj.flag} {activeRegionObj.name}</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Cart Drawer */}
       {cartOpen && (

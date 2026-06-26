@@ -53,6 +53,28 @@ body {
   animation: slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Hide scrollbar while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile carousel item sizing */
+.mobile-card {
+  flex-shrink: 0;
+  width: 72vw;
+  max-width: 220px;
+}
+
+/* Smooth momentum scrolling on iOS */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
 
 /* Focus-visible ring for keyboard navigation */
 :focus-visible {

@@ -405,8 +405,8 @@ Thank you for your order. May your spiritual journey be blessed.
   }
 
   return (
-    <div className="bg-brand-cream py-12 px-4 md:px-12 text-brand-charcoal font-sans animate-fade-in">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="bg-brand-cream py-8 md:py-12 px-4 md:px-12 text-brand-charcoal font-sans animate-fade-in">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
         
         {/* sub-brand indicator matching screenshot 2 */}
         <div className="flex items-center justify-between border-b border-brand-cream-dark pb-6">
@@ -1031,7 +1031,7 @@ Thank you for your order. May your spiritual journey be blessed.
           </div>
 
           {/* Right Summary column (Matches screenshot 2 and 3 style) */}
-          <div className="lg:col-span-4 bg-brand-paper border border-brand-cream-dark p-6 rounded-xs space-y-6 shadow-xs sticky top-32">
+          <div className="lg:col-span-4 bg-brand-paper border border-brand-cream-dark p-6 rounded-xs space-y-6 shadow-xs lg:sticky lg:top-32">
             <h3 className="text-lg font-serif text-brand-maroon font-bold border-b border-brand-cream-dark pb-3" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
               Order Summary
             </h3>
@@ -1108,6 +1108,22 @@ Thank you for your order. May your spiritual journey be blessed.
 
         </div>
       </div>
+
+      {/* Mobile sticky checkout footer */}
+      {currentStepView === 'review' && (
+        <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-brand-paper border-t border-brand-cream-dark px-4 py-3 shadow-[0_-4px_16px_rgba(0,0,0,0.1)]" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-brand-charcoal/60">Total</span>
+            <span className="text-base font-bold text-brand-maroon">{formatPrice(totalCost)}</span>
+          </div>
+          <button
+            onClick={handlePlaceOrder}
+            className="w-full py-4 bg-brand-maroon hover:bg-brand-maroon-dark text-white font-sans text-xs font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <ShieldCheck size={16} /> Place Your Order
+          </button>
+        </div>
+      )}
     </div>
   );
 }
