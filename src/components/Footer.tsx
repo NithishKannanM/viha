@@ -27,39 +27,39 @@ export default function Footer({ onNavigate, onSelectCategory }: FooterProps) {
           <h4 className="text-xs font-bold uppercase tracking-widest text-brand-maroon mb-4">Explore</h4>
           <ul className="space-y-2.5 text-xs text-brand-charcoal/80">
             <li>
-              <button onClick={() => onNavigate('home')} className="hover:text-brand-maroon transition-colors text-left">
+              <button onClick={() => onNavigate('home')} className="hover:text-brand-maroon transition-colors text-left cursor-pointer">
                 Founder Story
               </button>
             </li>
             <li>
-              <button 
+              <button
                 onClick={() => {
                   onSelectCategory('pooja');
                   onNavigate('shop');
-                }} 
-                className="hover:text-brand-maroon transition-colors text-left"
+                }}
+                className="hover:text-brand-maroon transition-colors text-left cursor-pointer"
               >
                 Pooja Essentials
               </button>
             </li>
             <li>
-              <button 
+              <button
                 onClick={() => {
                   onSelectCategory('ayurveda');
                   onNavigate('shop');
-                }} 
-                className="hover:text-brand-maroon transition-colors text-left"
+                }}
+                className="hover:text-brand-maroon transition-colors text-left cursor-pointer"
               >
                 Ayurveda Care
               </button>
             </li>
             <li>
-              <button 
+              <button
                 onClick={() => {
                   onSelectCategory('jewelry');
                   onNavigate('shop');
-                }} 
-                className="hover:text-brand-maroon transition-colors text-left"
+                }}
+                className="hover:text-brand-maroon transition-colors text-left cursor-pointer"
               >
                 Spiritual Adornments
               </button>
@@ -77,17 +77,17 @@ export default function Footer({ onNavigate, onSelectCategory }: FooterProps) {
               </a>
             </li>
             <li>
-              <button onClick={() => onSelectCategory('all')} className="hover:text-brand-maroon transition-colors text-left block">
+              <button onClick={() => onSelectCategory('all')} className="hover:text-brand-maroon transition-colors text-left block cursor-pointer">
                 Shipping Policy
               </button>
             </li>
             <li>
-              <button onClick={() => {} } className="hover:text-brand-maroon transition-colors text-left block">
+              <button type="button" onClick={() => {}} className="hover:text-brand-maroon transition-colors text-left block cursor-pointer">
                 Contact Us
               </button>
             </li>
             <li>
-              <button onClick={() => {} } className="hover:text-brand-maroon transition-colors text-left block">
+              <button type="button" onClick={() => {}} className="hover:text-brand-maroon transition-colors text-left block cursor-pointer">
                 Ethical Sourcing & Zari Guarantee
               </button>
             </li>

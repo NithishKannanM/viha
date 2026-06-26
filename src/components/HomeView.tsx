@@ -3,11 +3,19 @@ import { ArrowRight, Search, Truck, AlertCircle } from 'lucide-react';
 import { Product } from '../types';
 import { PRODUCTS } from '../data';
 interface HomeViewProps {
-  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker') => void;
+  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'beauty') => void;
   onSelectCategory: (category: string) => void;
   onTrackOrder: (orderId: string) => void;
   onViewProduct: (product: Product) => void;
 }
+
+const SectionOrnament = () => (
+  <div className="flex items-center justify-center gap-2 mt-4">
+    <div className="h-px w-10 bg-gradient-to-r from-transparent to-brand-gold/50" />
+    <div className="w-1.5 h-1.5 rotate-45 bg-brand-gold/75 shrink-0" />
+    <div className="h-px w-10 bg-gradient-to-l from-transparent to-brand-gold/50" />
+  </div>
+);
 
 export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, onViewProduct }: HomeViewProps) {
   const [trackInput, setTrackInput] = useState('');
@@ -40,7 +48,7 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
     <div className="bg-brand-cream-dark/20 animate-fade-in font-sans">
       
       {/* 1. Hero banner section with antique background image overlay */}
-      <section className="relative overflow-hidden w-full h-[520px] md:h-[620px] bg-brand-maroon flex items-center">
+      <section className="relative overflow-hidden w-full min-h-[480px] h-[520px] md:h-[620px] bg-brand-maroon flex items-center">
         {/* Artistic background blur photo representing spiritual lamps */}
         <div 
           className="absolute inset-0 bg-cover bg-center brightness-[0.45] saturate-100"
@@ -54,10 +62,10 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
         
         <div className="relative max-w-7xl mx-auto w-full px-6 md:px-12 text-center md:text-left z-10 flex flex-col justify-center">
           <span className="text-xs uppercase tracking-widest text-brand-gold font-bold mb-3 block">
-            PREMIUM SPIRITUAL LIFESTYLE
+            VIHA HERITAGE COLLECTION
           </span>
           
-          <h2 className="text-4xl md:text-6xl text-brand-cream/95 font-serif font-black tracking-tight leading-tight max-w-3xl mb-4" style={{ fontFamily: 'Libre Caslon Text, Playfair Display, serif' }}>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl text-brand-cream/95 font-serif font-black tracking-tight leading-tight max-w-3xl mb-4" style={{ fontFamily: 'Libre Caslon Text, Playfair Display, serif' }}>
             Tradition Delivered To Your Doorstep
           </h2>
           
@@ -66,23 +74,20 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-            <button 
+            <button
               onClick={() => {
                 onSelectCategory('all');
                 onNavigate('shop');
               }}
-              className="w-full sm:w-auto px-8 py-3.5 bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest rounded-xs hover:bg-brand-maroon-dark transition-colors border border-brand-maroon shadow-md"
+              className="w-full sm:w-auto px-8 py-3.5 bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest rounded-xs hover:bg-brand-maroon-dark transition-colors border border-brand-maroon shadow-md cursor-pointer"
             >
               Shop Collection
             </button>
-            <button 
-              onClick={() => {
-                onSelectCategory('ayurveda-herbal');
-                onNavigate('shop');
-              }}
-              className="w-full sm:w-auto px-8 py-3.5 bg-transparent text-white text-xs font-bold uppercase tracking-widest rounded-xs hover:bg-white/10 transition-all border border-white/50"
+            <button
+              onClick={() => onNavigate('beauty')}
+              className="w-full sm:w-auto px-8 py-3.5 bg-transparent text-white text-xs font-bold uppercase tracking-widest rounded-xs hover:bg-white/10 transition-all border border-white/50 cursor-pointer"
             >
-              Explore Ayurveda
+              Explore Beauty &amp; Wellness
             </button>
           </div>
         </div>
@@ -90,15 +95,19 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
 
       {/* Trust Banner */}
       <section className="bg-brand-maroon/95 py-5 px-6 md:px-12 border-y border-brand-gold/20">
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2 text-center">
-          <h4 className="text-sm md:text-base font-serif font-bold text-brand-cream tracking-tight" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
-            1,00,000+ Customers Trust Viha
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2.5 text-center">
+          <h4 className="font-serif text-brand-cream tracking-tight" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
+            <span className="text-xl md:text-2xl font-black text-brand-gold">1,00,000+</span>
+            <span className="text-sm md:text-base font-bold text-brand-cream/85"> Customers Trust Viha</span>
           </h4>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] md:text-[11px] text-brand-cream-dark/80 uppercase tracking-widest font-semibold">
-            <span className="flex items-center gap-1.5">✦ Authentic Spiritual Products</span>
-            <span className="flex items-center gap-1.5">✦ Secure Payments</span>
-            <span className="flex items-center gap-1.5">✦ International Delivery</span>
-            <span className="flex items-center gap-1.5">✦ Quality Assured</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-0 gap-y-1 text-[10px] md:text-[11px] text-brand-cream-dark/70 uppercase tracking-widest font-semibold">
+            <span className="px-3">Authentic Spiritual Products</span>
+            <span className="text-brand-gold/40">|</span>
+            <span className="px-3">Secure Payments</span>
+            <span className="text-brand-gold/40">|</span>
+            <span className="px-3">International Delivery</span>
+            <span className="text-brand-gold/40">|</span>
+            <span className="px-3">Quality Assured</span>
           </div>
         </div>
       </section>
@@ -106,10 +115,10 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
       {/* 2. Shop By Purpose Section */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h3 className="text-2xl md:text-3.5xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
+          <h3 className="text-2xl md:text-4xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
             Shop By Purpose
           </h3>
-          <div className="w-16 h-[1.5px] bg-brand-gold mx-auto mt-3"></div>
+          <SectionOrnament />
         </div>
 
         {/* Dynamic customized grid matching screenshot 1 precisely */}
@@ -169,24 +178,24 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
                 </div>
               </div>
 
-              {/* Ayurvedic Wellness */}
-              <div 
-                onClick={() => {
-                  onSelectCategory('ayurveda-herbal');
-                  onNavigate('shop');
-                }}
+              {/* Ayurvedic Beauty — links to dedicated beauty landing page */}
+              <div
+                onClick={() => onNavigate('beauty')}
                 className="relative h-[220px] bg-brand-maroon text-white overflow-hidden rounded-xs border border-brand-cream-dark shadow-sm group cursor-pointer"
               >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center brightness-[0.7] group-hover:scale-105 transition-transform duration-700"
+                <div
+                  className="absolute inset-0 bg-cover bg-center brightness-[0.65] group-hover:scale-105 transition-transform duration-700"
                   style={{ backgroundImage: 'url("/images/ayurveda_wellness.png")' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
+                  <span className="text-[9px] uppercase tracking-widest text-brand-gold font-bold mb-1.5 flex items-center gap-1">
+                    Beauty Guide <ArrowRight size={9} />
+                  </span>
                   <h4 className="text-sm font-serif font-semibold text-brand-cream/95 tracking-wide uppercase" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
-                    Ayurvedic Wellness
+                    Ayurvedic Beauty
                   </h4>
-                  <p className="text-[10px] text-brand-cream-dark/80 mt-0.5">Herbs and skin oils made to formula.</p>
+                  <p className="text-[10px] text-brand-cream-dark/75 mt-0.5">Ritual skincare &amp; herbal formulations.</p>
                 </div>
               </div>
             </div>
@@ -223,14 +232,56 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
         </div>
       </section>
 
-      {/* 2.5 Bestselling Items Section */}
+      {/* 2.5 Beauty & Wellness Promotional Section */}
+      <section className="py-16 bg-brand-section-alt border-t border-brand-cream-dark px-6 md:px-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+          {/* Image — Left */}
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:h-[440px] overflow-hidden rounded-xs">
+            <img
+              src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=900"
+              alt="Viha Beauty & Wellness — handcrafted Ayurvedic products"
+              className="w-full h-full object-cover brightness-[0.88] hover:brightness-[0.92] transition-all duration-500"
+            />
+          </div>
+
+          {/* Text — Right */}
+          <div className="space-y-5 lg:pl-6">
+            <span className="text-[10px] uppercase tracking-widest text-brand-gold font-bold block">
+              AYURVEDIC BEAUTY
+            </span>
+            <h2
+              className="text-3xl md:text-4xl font-serif text-brand-maroon font-black leading-tight"
+              style={{ fontFamily: 'Libre Caslon Text, serif' }}
+            >
+              Beauty &amp; Wellness,<br />Rooted in Ayurveda
+            </h2>
+            <div className="flex items-center gap-2">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-brand-gold/60" />
+              <div className="w-1 h-1 rotate-45 bg-brand-gold/70 shrink-0" />
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-brand-gold/60" />
+            </div>
+            <p className="text-sm text-brand-charcoal/75 leading-relaxed max-w-md">
+              Discover handcrafted soaps, herbal skincare, traditional hair oils, natural fragrances, Ayurvedic powders, and authentic self-care products inspired by generations of Indian wisdom.
+            </p>
+            <button
+              onClick={() => onNavigate('beauty')}
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-maroon hover:bg-brand-maroon-dark text-white text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer min-h-[44px]"
+            >
+              Explore Beauty &amp; Wellness <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 2.75 Bestselling Items Section */}
       <section className="py-16 bg-brand-paper border-t border-brand-cream-dark px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3.5xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
+            <h3 className="text-2xl md:text-4xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
               Bestselling Items
             </h3>
-            <div className="w-16 h-[1.5px] bg-brand-gold mx-auto mt-3"></div>
+            <SectionOrnament />
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -238,7 +289,7 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
               <div 
                 key={product.id}
                 onClick={() => onViewProduct(product)}
-                className="bg-brand-cream border border-brand-cream-dark rounded-xs overflow-hidden cursor-pointer group hover:shadow-md transition-all flex flex-col"
+                className="bg-brand-cream border border-brand-cream-dark border-t-2 border-t-transparent hover:border-t-brand-gold rounded-xs overflow-hidden cursor-pointer group hover:shadow-md transition-all flex flex-col"
               >
                 <div className="aspect-[4/3] overflow-hidden relative bg-brand-cream flex items-center justify-center">
                   <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain mix-blend-multiply p-2 group-hover:scale-105 transition-transform duration-500" />
@@ -292,18 +343,21 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <h3 className="text-2xl md:text-3.5xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
+              <h3 className="text-2xl md:text-4xl font-serif text-brand-maroon font-black" style={{ fontFamily: 'Libre Caslon Text, serif' }}>
                 Curated Collections
               </h3>
-              <div className="w-12 h-[1.5px] bg-brand-gold mt-2"></div>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="h-px w-8 bg-brand-gold/60" />
+                <div className="w-1 h-1 rotate-45 bg-brand-gold/70 shrink-0" />
+              </div>
             </div>
             
-            <button 
+            <button
               onClick={() => {
                 onSelectCategory('all');
                 onNavigate('shop');
               }}
-              className="text-brand-maroon hover:text-brand-gold transition-colors text-xs font-semibold uppercase tracking-widest flex items-center gap-1.5"
+              className="text-brand-maroon hover:text-brand-gold transition-colors text-xs font-semibold uppercase tracking-widest flex items-center gap-1.5 cursor-pointer"
             >
               View All <ArrowRight size={14} />
             </button>
@@ -461,7 +515,7 @@ export default function HomeView({ onNavigate, onSelectCategory, onTrackOrder, o
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-brand-gold text-white hover:bg-amber-700 transition-colors text-xs font-bold uppercase tracking-widest border border-brand-gold"
+              className="px-6 py-3 bg-brand-gold text-white hover:bg-amber-700 transition-colors text-xs font-bold uppercase tracking-widest border border-brand-gold cursor-pointer"
             >
               Track Order
             </button>

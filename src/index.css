@@ -4,15 +4,18 @@
 @theme {
   --font-serif: "Libre Caslon Text", "Playfair Display", Georgia, serif;
   --font-sans: "Hanken Grotesk", "Inter", sans-serif;
-  
-  --color-brand-maroon: #5c181a;
-  --color-brand-maroon-dark: #3f090b;
+
+  /* Heritage Green palette — client approved */
+  --color-brand-maroon: #0F5A43;
+  --color-brand-maroon-dark: #0B4533;
   --color-brand-gold: #B8893D;
   --color-brand-gold-light: #f5e4c3;
-  --color-brand-cream: #fdf9f1;
-  --color-brand-cream-dark: #f1ede6;
+  --color-brand-cream: #F8F4EC;
+  --color-brand-cream-dark: #E5DED1;
   --color-brand-charcoal: #2D2D2D;
-  --color-brand-paper: #FDFBF7;
+  --color-brand-paper: #FFFDF9;
+  --color-brand-muted: #666666;
+  --color-brand-section-alt: #F3EFE7;
 
   @keyframes fade-in {
     from { opacity: 0; transform: translateY(4px); }
@@ -22,9 +25,14 @@
     from { transform: translateY(100%); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
 
   --animate-fade-in: fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-in-left: slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 body {
@@ -41,17 +49,24 @@ body {
   animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* === Green Theme Override (client preview toggle) === */
-.theme-green {
-  --color-brand-maroon: #2d6b30;
-  --color-brand-maroon-dark: #1a4520;
-  --color-brand-gold: #c9a227;
-  --color-brand-gold-light: #f5edcc;
-  --color-brand-cream: #f4faf4;
-  --color-brand-cream-dark: #e5f0e5;
-  --color-brand-paper: #f8fdf8;
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.theme-green body {
-  background-color: var(--color-brand-cream);
+
+/* Focus-visible ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-brand-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

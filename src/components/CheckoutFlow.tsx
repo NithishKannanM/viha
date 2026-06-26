@@ -207,7 +207,7 @@ Thank you for your order. May your spiritual journey be blessed.
 
           {/* Intro Checkmark block */}
           <div className="text-center flex flex-col items-center max-w-xl mx-auto space-y-4">
-            <div className="w-16 h-16 rounded-full bg-red-100 border border-brand-gold/45 flex items-center justify-center p-4 shadow-sm animate-bounce">
+            <div className="w-16 h-16 rounded-full bg-brand-maroon/10 border border-brand-gold/45 flex items-center justify-center p-4 shadow-sm animate-fade-in">
               <Check className="text-brand-maroon" size={32} />
             </div>
             
@@ -244,9 +244,9 @@ Thank you for your order. May your spiritual journey be blessed.
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h5 className="text-xs font-bold text-brand-maroon uppercase tracking-widest">Courier Status</h5>
-                  <button 
-                    onClick={cycleOrderStatus} 
-                    className="text-[10px] text-brand-gold hover:underline font-bold uppercase tracking-widest flex items-center gap-1"
+                  <button
+                    onClick={cycleOrderStatus}
+                    className="text-[10px] text-brand-gold hover:underline font-bold uppercase tracking-widest flex items-center gap-1 cursor-pointer"
                     title="Simulate shipping progress"
                   >
                     Simulate Next Stage <Truck size={12} />
@@ -333,13 +333,13 @@ Thank you for your order. May your spiritual journey be blessed.
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 border-t border-brand-cream-dark">
             <button
               onClick={() => onNavigate('home')}
-              className="w-full sm:w-auto px-8 py-3 bg-brand-maroon text-white font-sans text-xs font-bold uppercase tracking-widest hover:bg-brand-maroon-dark transition-colors"
+              className="w-full sm:w-auto px-8 py-3 bg-brand-maroon text-white font-sans text-xs font-bold uppercase tracking-widest hover:bg-brand-maroon-dark transition-colors cursor-pointer"
             >
               ← Continue Shopping
             </button>
             <button
               onClick={handleDownloadInvoice}
-              className="w-full sm:w-auto px-8 py-3 bg-transparent border border-brand-gold text-brand-gold hover:bg-brand-cream-dark font-sans text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-3 bg-transparent border border-brand-gold text-brand-gold hover:bg-brand-cream-dark font-sans text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Download size={14} /> Download Invoice
             </button>
@@ -396,7 +396,7 @@ Thank you for your order. May your spiritual journey be blessed.
         <p className="text-xs text-brand-charcoal/60">Let's continue adding items to checkout.</p>
         <button
           onClick={() => onNavigate('shop')}
-          className="px-6 py-2.5 bg-brand-maroon text-white font-semibold text-xs uppercase tracking-widest hover:bg-brand-maroon-dark transition-colors"
+          className="px-6 py-2.5 bg-brand-maroon text-white font-semibold text-xs uppercase tracking-widest hover:bg-brand-maroon-dark transition-colors cursor-pointer"
         >
           View sacred catalogue
         </button>
@@ -415,9 +415,9 @@ Thank you for your order. May your spiritual journey be blessed.
               Heritage Spiritual Collective
             </h1>
           </div>
-          <button 
-            onClick={() => onNavigate('shop')} 
-            className="text-[10px] font-bold text-brand-gold uppercase tracking-widest hover:underline flex items-center gap-1"
+          <button
+            onClick={() => onNavigate('shop')}
+            className="text-[10px] font-bold text-brand-gold uppercase tracking-widest hover:underline flex items-center gap-1 cursor-pointer"
           >
             ← Return to Cart
           </button>
@@ -445,7 +445,7 @@ Thank you for your order. May your spiritual journey be blessed.
                     {/* Name row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">First Name <span className="text-red-500">*</span></label>
+                        <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">First Name <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           required
@@ -456,7 +456,7 @@ Thank you for your order. May your spiritual journey be blessed.
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Last Name <span className="text-red-500">*</span></label>
+                        <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Last Name <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           required
@@ -470,7 +470,7 @@ Thank you for your order. May your spiritual journey be blessed.
 
                     {/* Email */}
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Email Address <span className="text-red-500">*</span></label>
+                      <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Email Address <span className="text-red-500">*</span></label>
                       <input
                         type="email"
                         required
@@ -479,12 +479,12 @@ Thank you for your order. May your spiritual journey be blessed.
                         placeholder="seeker@example.com"
                         className="w-full text-xs px-4 py-3 bg-brand-cream/35 border border-brand-cream-dark focus:outline-none focus:border-brand-maroon rounded-xs placeholder:text-brand-charcoal/30 text-brand-charcoal"
                       />
-                      <p className="text-[10px] text-brand-charcoal/45 mt-1">Order confirmation and tracking updates will be sent here.</p>
+                      <p className="text-xs text-brand-muted mt-1">Order confirmation and tracking updates will be sent here.</p>
                     </div>
 
                     {/* Phone */}
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Phone Number <span className="text-red-500">*</span></label>
+                      <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Phone Number <span className="text-red-500">*</span></label>
                       <div className="flex gap-2">
                         <div className="flex items-center px-3 py-3 bg-brand-cream-dark border border-brand-cream-dark rounded-xs text-xs font-bold text-brand-charcoal/70 whitespace-nowrap select-none min-w-[64px] justify-center">
                           {phonePrefix}
@@ -498,14 +498,14 @@ Thank you for your order. May your spiritual journey be blessed.
                           className="flex-1 text-xs px-4 py-3 bg-brand-cream/35 border border-brand-cream-dark focus:outline-none focus:border-brand-maroon rounded-xs placeholder:text-brand-charcoal/30 text-brand-charcoal"
                         />
                       </div>
-                      <p className="text-[10px] text-brand-charcoal/45 mt-1">For delivery coordination and customs clearance queries.</p>
+                      <p className="text-xs text-brand-muted mt-1">For delivery coordination and customs clearance queries.</p>
                     </div>
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-brand-maroon hover:bg-brand-maroon-dark text-white font-sans text-xs font-bold uppercase tracking-widest transition-colors"
+                  className="w-full py-3 bg-brand-maroon hover:bg-brand-maroon-dark text-white font-sans text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer"
                 >
                   Continue to Delivery Method →
                 </button>
@@ -526,7 +526,7 @@ Thank you for your order. May your spiritual journey be blessed.
                   </div>
                   <button
                     onClick={() => onSetStepView('info')}
-                    className="text-[10px] font-bold text-brand-maroon uppercase hover:underline"
+                    className="text-[10px] font-bold text-brand-maroon uppercase hover:underline cursor-pointer"
                   >
                     Edit
                   </button>
@@ -634,7 +634,7 @@ Thank you for your order. May your spiritual journey be blessed.
                         <div className="space-y-3">
                           {/* Street line 1 */}
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Street Address <span className="text-red-500">*</span></label>
+                            <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Street Address <span className="text-red-500">*</span></label>
                             <input
                               type="text"
                               required={deliveryMethod === 'home'}
@@ -647,7 +647,7 @@ Thank you for your order. May your spiritual journey be blessed.
 
                           {/* Street line 2 */}
                           <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Apartment, Suite, Unit <span className="text-brand-charcoal/30">(Optional)</span></label>
+                            <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Apartment, Suite, Unit <span className="text-brand-charcoal/30">(Optional)</span></label>
                             <input
                               type="text"
                               value={streetLine2}
@@ -660,7 +660,7 @@ Thank you for your order. May your spiritual journey be blessed.
                           {/* City + State */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div className="space-y-1">
-                              <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">City <span className="text-red-500">*</span></label>
+                              <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">City <span className="text-red-500">*</span></label>
                               <input
                                 type="text"
                                 required={deliveryMethod === 'home'}
@@ -671,7 +671,7 @@ Thank you for your order. May your spiritual journey be blessed.
                               />
                             </div>
                             <div className="space-y-1">
-                              <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">{stateLabel}</label>
+                              <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">{stateLabel}</label>
                               <input
                                 type="text"
                                 value={stateProvince}
@@ -685,7 +685,7 @@ Thank you for your order. May your spiritual journey be blessed.
                           {/* Postal code + Country */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div className="space-y-1">
-                              <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">
+                              <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">
                                 {currentRegion === 'US' || currentRegion === 'CA' ? 'ZIP Code' : 'Postal Code'} <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -698,7 +698,7 @@ Thank you for your order. May your spiritual journey be blessed.
                               />
                             </div>
                             <div className="space-y-1">
-                              <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Country <span className="text-red-500">*</span></label>
+                              <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Country <span className="text-red-500">*</span></label>
                               <input
                                 type="text"
                                 required={deliveryMethod === 'home'}
@@ -792,7 +792,7 @@ Thank you for your order. May your spiritual journey be blessed.
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Name on Card <span className="text-red-500">*</span></label>
+                        <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Name on Card <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           value={cardName}
@@ -803,7 +803,7 @@ Thank you for your order. May your spiritual journey be blessed.
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Card Number <span className="text-red-500">*</span></label>
+                        <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Card Number <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <input
                             type="text"
@@ -822,7 +822,7 @@ Thank you for your order. May your spiritual journey be blessed.
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">Expiry <span className="text-red-500">*</span></label>
+                          <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">Expiry <span className="text-red-500">*</span></label>
                           <input
                             type="text"
                             inputMode="numeric"
@@ -834,7 +834,7 @@ Thank you for your order. May your spiritual journey be blessed.
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">CVV <span className="text-red-500">*</span></label>
+                          <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">CVV <span className="text-red-500">*</span></label>
                           <input
                             type="password"
                             inputMode="numeric"
@@ -861,7 +861,7 @@ Thank you for your order. May your spiritual journey be blessed.
                         Pay instantly using any UPI-enabled app — PhonePe, GPay, Paytm, or your bank app.
                       </p>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase font-bold tracking-widest text-brand-gold">UPI ID <span className="text-red-500">*</span></label>
+                        <label className="text-xs uppercase font-bold tracking-widest text-brand-gold">UPI ID <span className="text-red-500">*</span></label>
                         <input
                           type="text"
                           value={upiId}

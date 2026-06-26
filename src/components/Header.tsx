@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Heart, User, ShoppingBag, X, Trash2, ArrowRight, ShieldAlert, CheckCircle2, Globe, HelpCircle } from 'lucide-react';
+import { Search, Heart, User, ShoppingBag, X, Trash2, ArrowRight, ShieldAlert, CheckCircle2, Globe, HelpCircle, Package, Lock, Menu } from 'lucide-react';
 import Logo from './Logo';
 import { CartItem, Product } from '../types';
 import { PRODUCTS, REGIONS, Region } from '../data';
 
 interface HeaderProps {
   cart: CartItem[];
-  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account') => void;
+  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account' | 'beauty') => void;
   onSelectCategory: (category: string) => void;
   onRemoveFromCart: (productId: string) => void;
   onUpdateCartQty: (productId: string, qty: number) => void;
@@ -67,6 +67,24 @@ const MEGA_MENU_DATA: Record<string, {
       imageUrl: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"
     },
     quote: "Reclaim organic wellness crafted with ancestral biological wisdom."
+  },
+  'beauty': {
+    subcategories: [
+      { name: "Handmade Soaps", description: "Cold-process botanical bars", items: ["Red Sandalwood Soap", "Neem & Haldi Soap", "Tulsi Bath Bar"] },
+      { name: "Ayurvedic Skincare", description: "Face packs & scrubs", items: ["Chandan Facial Pack", "Ubtan Pack", "Botanical Scrub"] },
+      { name: "Hair & Body Oils", description: "Therapeutic extractions", items: ["Kumkumadi Fluid", "Cold Sesame Oil", "Pancha Deepam Mix"] },
+      { name: "Natural Perfumes", description: "Alcohol-free attars", items: ["Jasmine Attar Roll-on", "Sandalwood Extract", "Mogra Vapour"] },
+      { name: "Bath & Scrubs", description: "Cleansing rituals", items: ["Vetiver Root Scrub", "Darba Grass Exfoliator", "Matted Root Scrub"] },
+      { name: "Traditional Self-Care", description: "Ancestral wellness", items: ["Karungali Products", "Heritage Kumkum", "Herbal Powder Blends"] }
+    ],
+    featured: {
+      id: "red-sandalwood-handmade-soap",
+      name: 'Handmade Red Sandalwood Soap',
+      price: 240,
+      description: "Natural moisture soap with red sandalwood extract and traditional calming herbs. 100g bar.",
+      imageUrl: "https://images.unsplash.com/photo-1607006342411-1a90c4fb3152?q=80&w=600"
+    },
+    quote: "Skin rituals rooted in five thousand years of Ayurvedic wisdom."
   },
   'jewellery-fashion': {
     subcategories: [
@@ -212,6 +230,7 @@ export default function Header({
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [regionDropdownOpen, setRegionDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showRegionPrompt, setShowRegionPrompt] = useState(() => {
     return !localStorage.getItem('preferred_region');
   });
@@ -233,6 +252,7 @@ export default function Header({
     { id: 'all', label: 'All Essentials' },
     { id: 'spiritual-pooja', label: 'Spiritual & Pooja' },
     { id: 'ayurveda-herbal', label: 'Ayurveda & Herbal' },
+    { id: 'beauty', label: 'Beauty & Wellness' },
     { id: 'jewellery-fashion', label: 'Jewellery & Fashion' },
     { id: 'home-living', label: 'Home & Living' },
     { id: 'food-organic', label: 'Food & Organic' },
@@ -254,8 +274,8 @@ export default function Header({
       )}
 
       {/* Top Banner indicating delivery details and allowing context setup */}
-      <div className="bg-brand-maroon-dark text-white text-[11px] px-4 py-2 text-center flex items-center justify-center gap-2 tracking-wide font-sans relative z-50">
-        <span>📦 Free shipping worldwide to {activeRegionObj.flag} on orders over {formatPrice(1000)} equivalent.</span>
+      <div className="bg-brand-maroon-dark text-white text-[11px] px-4 py-2 text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-1 tracking-wide font-sans relative z-50">
+        <span className="flex items-center gap-1.5"><Package size={11} className="shrink-0" /> Free shipping worldwide to {activeRegionObj.flag} on orders over {formatPrice(1000)} equivalent.</span>
         <span className="hidden sm:inline opacity-60">|</span>
         <div className="flex items-center gap-1.5">
           <span className="opacity-85">Ships to:</span>
@@ -288,7 +308,16 @@ export default function Header({
             </div>
 
             {/* Utility Icons Right */}
-            <div className="flex items-center space-x-5 text-brand-maroon">
+            <div className="flex items-center space-x-4 text-brand-maroon">
+              {/* Mobile hamburger — categories nav */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors cursor-pointer"
+                aria-label="Open menu"
+              >
+                <Menu size={20} strokeWidth={1.5} />
+              </button>
+
               {/* Region Selector Icon Trigger */}
               <button
                 onClick={() => { setRegionDropdownOpen(v => !v); setHoveredCategory(null); }}
@@ -301,26 +330,29 @@ export default function Header({
                 </span>
               </button>
 
-              <button 
+              <button
                 onClick={() => setSearchOpen(true)}
                 className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors relative cursor-pointer"
                 title="Search"
+                aria-label="Search"
               >
                 <Search size={18} strokeWidth={1.5} />
               </button>
 
-              <button 
-                onClick={() => onNavigate('account')} 
+              <button
+                onClick={() => onNavigate('account')}
                 className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors relative hidden sm:inline-block cursor-pointer"
                 title="Profile / Account"
+                aria-label="My Account"
               >
                 <User size={18} strokeWidth={1.5} />
               </button>
 
-              <button 
+              <button
                 onClick={() => setWishlistOpen(true)}
                 className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors relative cursor-pointer"
                 title={`Saved Favorites (${wishlist.length})`}
+                aria-label={`Wishlist, ${wishlist.length} items`}
               >
                 <Heart 
                   size={18} 
@@ -334,10 +366,11 @@ export default function Header({
                 )}
               </button>
 
-              <button 
+              <button
                 onClick={() => setCartOpen(true)}
                 className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors relative cursor-pointer"
                 title="Cart"
+                aria-label={`Shopping cart, ${cartCount} items`}
               >
                 <ShoppingBag size={18} strokeWidth={1.5} />
                 {cartCount > 0 && (
@@ -358,15 +391,19 @@ export default function Header({
                 key={cat.id}
                 onMouseEnter={() => { setHoveredCategory(cat.id); setRegionDropdownOpen(false); }}
                 onClick={() => {
-                  onSelectCategory(cat.id);
-                  onNavigate('shop');
+                  if (cat.id === 'beauty') {
+                    onNavigate('beauty');
+                  } else {
+                    onSelectCategory(cat.id);
+                    onNavigate('shop');
+                  }
                   setHoveredCategory(null);
                 }}
                 className={`text-brand-charcoal/90 hover:text-brand-maroon hover:bg-brand-cream-dark/50 rounded-xs px-2.5 py-1.5 transition-all font-sans text-[10px] xl:text-[10.5px] tracking-wider uppercase font-semibold relative cursor-pointer ${
-                  cat.id === 'all' 
-                    ? 'text-brand-gold font-bold border-b border-brand-gold/40' 
-                    : cat.id === hoveredCategory 
-                      ? 'text-brand-maroon bg-brand-cream-dark/30' 
+                  cat.id === 'all'
+                    ? 'text-brand-gold font-bold border-b border-brand-gold/40'
+                    : cat.id === hoveredCategory
+                      ? 'text-brand-maroon bg-brand-cream-dark/30'
                       : ''
                 }`}
               >
@@ -409,8 +446,8 @@ export default function Header({
                 </button>
               ))}
             </div>
-            <p className="text-[9.5px] text-[#8c6d3f] leading-normal italic pt-2 border-t border-[#f1ede6] text-center">
-              🌍 Some biological, botanical oils & wooden carvings are custom restricted outside India.
+            <p className="text-[9.5px] text-[#8c6d3f] leading-normal italic pt-2 border-t border-[#f1ede6] text-center flex items-center justify-center gap-1">
+              <Globe size={10} className="shrink-0" /> Some biological, botanical oils & wooden carvings are custom restricted outside India.
             </p>
           </div>
         )}
@@ -439,8 +476,12 @@ export default function Header({
                         <li key={itemIdx}>
                           <button
                             onClick={() => {
-                              onSelectCategory(hoveredCategory);
-                              onNavigate('shop');
+                              if (hoveredCategory === 'beauty') {
+                                onNavigate('beauty');
+                              } else {
+                                onSelectCategory(hoveredCategory);
+                                onNavigate('shop');
+                              }
                               setHoveredCategory(null);
                             }}
                             className="text-[11px] text-brand-charcoal/80 hover:text-brand-maroon transition-colors hover:translate-x-0.5 inline-block cursor-pointer text-left font-medium"
@@ -485,13 +526,17 @@ export default function Header({
                 
                 <button
                   onClick={() => {
-                    onSelectCategory(hoveredCategory);
-                    onNavigate('shop');
+                    if (hoveredCategory === 'beauty') {
+                      onNavigate('beauty');
+                    } else {
+                      onSelectCategory(hoveredCategory);
+                      onNavigate('shop');
+                    }
                     setHoveredCategory(null);
                   }}
                   className="w-full py-2 bg-brand-maroon hover:bg-brand-maroon-dark text-white text-[9px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
-                  Shop Now <ArrowRight size={10} />
+                  {hoveredCategory === 'beauty' ? 'Explore Beauty' : 'Shop Now'} <ArrowRight size={10} />
                 </button>
               </div>
 
@@ -507,6 +552,70 @@ export default function Header({
         )}
       </header>
 
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileMenuOpen(false)} />
+          <div className="fixed inset-y-0 left-0 w-72 bg-brand-cream flex flex-col shadow-2xl animate-slide-in-left">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-brand-cream-dark bg-brand-paper">
+              <Logo size="sm" />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1.5 hover:bg-brand-cream-dark rounded-full cursor-pointer transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2 px-5 py-3 bg-brand-maroon/5 border-b border-brand-cream-dark">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold">Browse Categories</span>
+            </div>
+
+            <nav className="flex-1 overflow-y-auto py-1" aria-label="Mobile navigation">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    if (cat.id === 'beauty') {
+                      onNavigate('beauty');
+                    } else {
+                      onSelectCategory(cat.id);
+                      onNavigate('shop');
+                    }
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-colors border-b border-brand-cream-dark/40 cursor-pointer min-h-[44px] flex items-center ${
+                    cat.id === 'new-arrivals'
+                      ? 'text-brand-gold font-bold'
+                      : cat.id === 'beauty'
+                        ? 'text-brand-maroon font-semibold hover:bg-brand-cream-dark/40'
+                        : 'text-brand-charcoal hover:bg-brand-cream-dark/40 hover:text-brand-maroon'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </nav>
+
+            <div className="p-5 border-t border-brand-cream-dark bg-brand-paper space-y-3">
+              <button
+                onClick={() => { onNavigate('account'); setMobileMenuOpen(false); }}
+                className="w-full flex items-center gap-3 py-2.5 px-3 text-sm text-brand-charcoal hover:text-brand-maroon transition-colors cursor-pointer"
+              >
+                <User size={16} /> My Account
+              </button>
+              <button
+                onClick={() => { setRegionDropdownOpen(true); setMobileMenuOpen(false); }}
+                className="w-full flex items-center gap-3 py-2.5 px-3 text-sm text-brand-charcoal hover:text-brand-maroon transition-colors cursor-pointer"
+              >
+                <Globe size={16} /> {activeRegionObj.flag} {activeRegionObj.name}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cart Drawer */}
       {cartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden font-sans">
@@ -518,7 +627,7 @@ export default function Header({
                   <ShoppingBag size={20} className="text-brand-gold" />
                   Your Sacred Basket
                 </h3>
-                <button onClick={() => setCartOpen(false)} className="p-1 hover:bg-brand-cream-dark rounded-full">
+                <button onClick={() => setCartOpen(false)} className="p-1 hover:bg-brand-cream-dark rounded-full cursor-pointer" aria-label="Close cart">
                   <X size={20} />
                 </button>
               </div>
@@ -568,16 +677,18 @@ export default function Header({
                               <div className="flex items-center border border-brand-cream-dark rounded-xs bg-brand-cream">
                                 <button
                                   onClick={() => onUpdateCartQty(item.product.id, item.quantity - 1)}
-                                  className="px-2 py-0.5 text-xs text-brand-charcoal hover:bg-brand-cream-dark cursor-pointer"
+                                  className="px-3 py-2 text-sm text-brand-charcoal hover:bg-brand-cream-dark cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                                  aria-label="Decrease quantity"
                                 >
-                                  -
+                                  −
                                 </button>
-                                <span className="px-2.5 py-0.5 text-xs font-medium text-brand-charcoal bg-brand-paper">
+                                <span className="px-3 py-2 text-xs font-medium text-brand-charcoal bg-brand-paper min-w-[36px] text-center">
                                   {item.quantity}
                                 </span>
                                 <button
                                   onClick={() => onUpdateCartQty(item.product.id, item.quantity + 1)}
-                                  className="px-2 py-0.5 text-xs text-brand-charcoal hover:bg-brand-cream-dark cursor-pointer"
+                                  className="px-3 py-2 text-sm text-brand-charcoal hover:bg-brand-cream-dark cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                                  aria-label="Increase quantity"
                                 >
                                   +
                                 </button>
@@ -1007,8 +1118,8 @@ export default function Header({
                     </div>
                   </div>
 
-                  <p className="text-[9.5px] text-brand-charcoal/40 italic leading-snug pt-1">
-                    🔒 All other brassware thali sets, silk sarees, and metal jewelry comply with general shipping bounds across all selected nations.
+                  <p className="text-[9.5px] text-brand-charcoal/40 italic leading-snug pt-1 flex items-start gap-1">
+                    <Lock size={10} className="shrink-0 mt-0.5" /> All other brassware thali sets, silk sarees, and metal jewelry comply with general shipping bounds across all selected nations.
                   </p>
                 </div>
 

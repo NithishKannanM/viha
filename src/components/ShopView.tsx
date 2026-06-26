@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, ArrowRight, Star, Check, Info, Heart, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Star, Check, Info, Heart, ShieldAlert, CheckCircle2, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { Product } from '../types';
 import { PRODUCTS, PRODUCT_CATEGORIES, REGIONS } from '../data';
 
@@ -26,6 +26,7 @@ export default function ShopView({
 }: ShopViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const activeRegionObj = REGIONS.find(r => r.id === currentRegion) || REGIONS[0];
 
@@ -102,9 +103,21 @@ export default function ShopView({
         </div>
       </div>
 
+      {/* Mobile filter toggle */}
+      <div className="lg:hidden">
+        <button
+          onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+          className="flex items-center gap-2 px-4 py-2.5 border border-brand-cream-dark bg-brand-paper text-xs font-bold uppercase tracking-widest cursor-pointer rounded-xs w-full justify-between hover:border-brand-maroon transition-colors"
+          aria-expanded={mobileFilterOpen}
+        >
+          <span className="flex items-center gap-2"><SlidersHorizontal size={14} /> Filter by Category</span>
+          <ChevronDown size={14} className={`transition-transform duration-200 ${mobileFilterOpen ? 'rotate-180' : ''}`} />
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column Categories Menu (Sidebar) */}
-        <aside className="lg:col-span-3 bg-brand-paper border border-brand-cream-dark p-6 rounded-xs space-y-6">
+        <aside className={`lg:col-span-3 bg-brand-paper border border-brand-cream-dark p-6 rounded-xs space-y-6 ${mobileFilterOpen ? 'block' : 'hidden'} lg:block`}>
           <div>
             <h4 className="text-xs font-bold text-brand-maroon uppercase tracking-widest border-b border-brand-cream-dark pb-3">
               Categories
@@ -114,7 +127,7 @@ export default function ShopView({
                 <button
                   key={cat.id}
                   onClick={() => onSelectCategory(cat.id)}
-                  className={`py-2 px-3 text-left rounded-sm transition-all flex items-center justify-between ${
+                  className={`py-2 px-3 text-left rounded-sm transition-all flex items-center justify-between cursor-pointer ${
                     selectedCategory === cat.id
                       ? 'bg-brand-maroon text-white font-semibold'
                       : 'hover:bg-brand-cream-dark/20 text-brand-charcoal/80'
@@ -149,7 +162,7 @@ export default function ShopView({
                   onSelectCategory('all');
                   setSearchQuery('');
                 }}
-                className="px-6 py-2 bg-brand-maroon text-white text-xs uppercase tracking-widest font-semibold hover:bg-red-950 transition-colors"
+                className="px-6 py-2 bg-brand-maroon text-white text-xs uppercase tracking-widest font-semibold hover:bg-red-950 transition-colors cursor-pointer"
               >
                 Reset catalog filters
               </button>
@@ -161,8 +174,10 @@ export default function ShopView({
                 return (
                   <div 
                     key={p.id}
-                    className={`bg-brand-paper border rounded-xs group flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md transition-shadow relative ${
-                      isRestricted ? 'border-red-300 bg-red-50/10' : 'border-brand-cream-dark'
+                    className={`bg-brand-paper border border-t-2 rounded-xs group flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-md transition-all relative ${
+                      isRestricted
+                        ? 'border-red-300 border-t-red-300 bg-red-50/10'
+                        : 'border-brand-cream-dark border-t-transparent hover:border-t-brand-gold'
                     }`}
                   >
                     {/* Item Image */}
@@ -219,7 +234,7 @@ export default function ShopView({
                         >
                           {p.name}
                         </h3>
-                        <p className="text-[11px] text-brand-charcoal/70 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-brand-charcoal/70 line-clamp-2 leading-relaxed">
                           {p.description}
                         </p>
                         

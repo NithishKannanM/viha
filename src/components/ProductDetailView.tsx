@@ -238,7 +238,7 @@ export default function ProductDetailView({
                   })}
                 </div>
                 
-                <button className="w-full mt-8 py-3 bg-white text-brand-maroon border border-brand-maroon text-xs font-bold uppercase tracking-widest hover:bg-brand-maroon hover:text-white transition-colors cursor-pointer">
+                <button type="button" className="w-full mt-8 py-3 bg-white text-brand-maroon border border-brand-maroon text-xs font-bold uppercase tracking-widest hover:bg-brand-maroon hover:text-white transition-colors cursor-pointer">
                   Write a review
                 </button>
               </div>
