@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Heart, User, ShoppingBag, X, ArrowRight, ShieldAlert, CheckCircle2, Globe, HelpCircle, Package, Lock, Menu, Sparkles } from 'lucide-react';
 import Logo from './Logo';
@@ -235,6 +235,19 @@ export default function Header({
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [regionDropdownOpen, setRegionDropdownOpen] = useState(false);
+  const megaMenuTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCategoryEnter = (catId: string) => {
+    // Guard: don't trigger mega menu while country dropdown is open
+    if (regionDropdownOpen) return;
+    if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current);
+    // 160ms hover-intent delay — filters accidental pass-through
+    megaMenuTimer.current = setTimeout(() => setHoveredCategory(catId), 160);
+  };
+
+  const handleCategoryLeave = () => {
+    if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current);
+  };
   const [showRegionPrompt, setShowRegionPrompt] = useState(() => {
     return !localStorage.getItem('preferred_region');
   });
@@ -292,11 +305,14 @@ export default function Header({
         </div>
       </div>
 
-      <header 
+      <header
         className="sticky top-0 z-40 w-full bg-brand-cream border-b border-brand-cream-dark shadow-xs"
-        onMouseLeave={() => setHoveredCategory(null)}
+        onMouseLeave={() => {
+          if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current);
+          setHoveredCategory(null);
+        }}
       >
-        <div className="px-4 md:px-12 py-3 bg-[#fdf9f1]">
+        <div className="px-4 md:px-12 py-3 bg-[#fdf9f1] relative z-[2]">
           <div className="max-w-7xl mx-auto flex items-center justify-between animate-fade-in">
             
             {/* Logo Left */}
@@ -322,17 +338,57 @@ export default function Header({
                 <Menu size={20} strokeWidth={1.5} />
               </button>
 
-              {/* Region Selector Icon Trigger */}
-              <button
-                onClick={() => { setRegionDropdownOpen(v => !v); setHoveredCategory(null); }}
-                className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors flex items-center gap-1 cursor-pointer text-brand-maroon"
-                title="Change delivery country"
-              >
-                <span className="text-base">{activeRegionObj.flag}</span>
-                <span className="text-[10px] uppercase tracking-wider font-bold font-sans hidden md:inline">
-                  {activeRegionObj.id}
-                </span>
-              </button>
+              {/* Region Selector Icon Trigger with inline dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => { setRegionDropdownOpen(v => !v); setHoveredCategory(null); }}
+                  className="p-1.5 hover:bg-brand-cream-dark rounded-full transition-colors flex items-center gap-1 cursor-pointer text-brand-maroon"
+                  title="Change delivery country"
+                >
+                  <span className="text-base">{activeRegionObj.flag}</span>
+                  <span className="text-[10px] uppercase tracking-wider font-bold font-sans hidden md:inline">
+                    {activeRegionObj.id}
+                  </span>
+                </button>
+
+                {regionDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-60 bg-brand-paper border border-[#f1ede6] shadow-xl z-[70] rounded-xs p-3 space-y-2 text-brand-charcoal animate-fade-in">
+                    <div className="flex items-center justify-between border-b border-brand-cream-dark pb-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold">
+                        Active Destination
+                      </span>
+                      <button onClick={() => setRegionDropdownOpen(false)} className="text-brand-charcoal/40 hover:text-brand-maroon cursor-pointer">
+                        <X size={12} />
+                      </button>
+                    </div>
+                    <div className="max-h-60 overflow-y-auto space-y-1 py-1">
+                      {REGIONS.map((reg) => (
+                        <button
+                          key={reg.id}
+                          onClick={() => {
+                            onRegionChange(reg.id);
+                            setRegionDropdownOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between p-2 text-xs text-left rounded-xs transition-colors cursor-pointer ${
+                            reg.id === currentRegion ? 'bg-[#f1ede6] font-bold text-brand-maroon' : 'hover:bg-[#fdf9f1]'
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>{reg.flag}</span>
+                            <span>{reg.name}</span>
+                          </span>
+                          <span className="text-[9px] text-brand-charcoal/45 font-mono uppercase bg-brand-cream border border-[#f1ede6] rounded-xs px-1.5">
+                            {reg.currency}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-[9.5px] text-[#8c6d3f] leading-normal italic pt-2 border-t border-[#f1ede6] text-center flex items-center justify-center gap-1">
+                      <Globe size={10} className="shrink-0" /> Some biological, botanical oils & wooden carvings are custom restricted outside India.
+                    </p>
+                  </div>
+                )}
+              </div>
 
               <button
                 onClick={() => setSearchOpen(true)}
@@ -387,13 +443,14 @@ export default function Header({
           </div>
         </div>
 
-        {/* Second Row: Complete 11 Brand Categories Strip */}
-        <div className="border-t border-brand-cream-dark/50 bg-[#faf6ee] hidden lg:block select-none py-1 shadow-3xs">
+        {/* Second Row: Categories Strip — isolated stacking context at z-[1], contains mega menu */}
+        <div className="border-t border-brand-cream-dark/50 bg-[#faf6ee] hidden lg:block select-none py-1 shadow-3xs relative z-[1]">
           <div className="max-w-7xl mx-auto px-12 flex items-center justify-center gap-1 xl:gap-2 flex-wrap">
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onMouseEnter={() => { setHoveredCategory(cat.id); setRegionDropdownOpen(false); }}
+                onMouseEnter={() => handleCategoryEnter(cat.id)}
+                onMouseLeave={handleCategoryLeave}
                 onClick={() => {
                   if (cat.id === 'beauty') {
                     onNavigate('beauty');
@@ -415,50 +472,10 @@ export default function Header({
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Region Destination Dropdown — positioned below full header via top-full */}
-        {regionDropdownOpen && (
-          <div className="absolute top-full right-4 md:right-12 w-60 bg-brand-paper border border-[#f1ede6] shadow-xl z-[60] rounded-xs p-3 space-y-2 text-brand-charcoal animate-fade-in">
-            <div className="flex items-center justify-between border-b border-brand-cream-dark pb-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold">
-                Active Destination
-              </span>
-              <button onClick={() => setRegionDropdownOpen(false)} className="text-brand-charcoal/40 hover:text-brand-maroon cursor-pointer">
-                <X size={12} />
-              </button>
-            </div>
-            <div className="max-h-60 overflow-y-auto space-y-1 py-1">
-              {REGIONS.map((reg) => (
-                <button
-                  key={reg.id}
-                  onClick={() => {
-                    onRegionChange(reg.id);
-                    setRegionDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between p-2 text-xs text-left rounded-xs transition-colors cursor-pointer ${
-                    reg.id === currentRegion ? 'bg-[#f1ede6] font-bold text-brand-maroon' : 'hover:bg-[#fdf9f1]'
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <span>{reg.flag}</span>
-                    <span>{reg.name}</span>
-                  </span>
-                  <span className="text-[9px] text-brand-charcoal/45 font-mono uppercase bg-brand-cream border border-[#f1ede6] rounded-xs px-1.5">
-                    {reg.currency}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <p className="text-[9.5px] text-[#8c6d3f] leading-normal italic pt-2 border-t border-[#f1ede6] text-center flex items-center justify-center gap-1">
-              <Globe size={10} className="shrink-0" /> Some biological, botanical oils & wooden carvings are custom restricted outside India.
-            </p>
-          </div>
-        )}
-
-        {/* Hover Mega Menu Display Dropdown */}
-        {hoveredCategory && MEGA_MENU_DATA[hoveredCategory] && !regionDropdownOpen && (
-          <div 
+          {/* Mega Menu — lives inside Row 2 stacking context (z-[1]), cannot escape above Row 1 (z-[2]) */}
+          {hoveredCategory && MEGA_MENU_DATA[hoveredCategory] && !regionDropdownOpen && (
+          <div
             className="absolute left-0 right-0 top-full bg-brand-paper border-b border-brand-cream-dark shadow-xl z-50 hidden lg:block border-t border-[#f1ede6] animate-fade-in"
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
             onMouseLeave={() => setHoveredCategory(null)}
@@ -553,7 +570,8 @@ export default function Header({
               </p>
             </div>
           </div>
-        )}
+          )}
+        </div>
       </header>
 
       {/* Mobile Menu Drawer — full-screen with framer-motion */}

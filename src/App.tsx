@@ -6,6 +6,7 @@ import ShopView from './components/ShopView';
 import CheckoutFlow from './components/CheckoutFlow';
 import TrackerView from './components/TrackerView';
 import AccountView from './components/AccountView';
+import LoginView from './components/LoginView';
 import ProductDetailView from './components/ProductDetailView';
 import BeautyView from './components/BeautyView';
 import MobileBottomNav from './components/MobileBottomNav';
@@ -14,7 +15,7 @@ import { Product, CartItem, Order } from './types';
 import { PRODUCTS, MOCK_ORDERS } from './data';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'shop' | 'checkout' | 'tracker' | 'account' | 'product' | 'beauty'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'shop' | 'checkout' | 'tracker' | 'account' | 'login' | 'product' | 'beauty'>('home');
   const [checkoutStepView, setCheckoutStepView] = useState<'info' | 'delivery' | 'payment' | 'review' | 'success'>('info');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeProductDetail, setActiveProductDetail] = useState<Product | null>(null);
@@ -79,15 +80,17 @@ export default function App() {
 
   const handleClearCart = () => setCart([]);
 
-  const handleNavigate = (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account' | 'product' | 'beauty') => {
+  const handleNavigate = (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account' | 'login' | 'product' | 'beauty') => {
     setActiveTrackingOrder(null);
     if (view === 'cart') {
       setCartOpen(true);
     } else if (view === 'checkout-info') {
       setCurrentView('checkout');
       setCheckoutStepView('info');
+    } else if (view === 'account') {
+      setCurrentView('login');
     } else {
-      setCurrentView(view);
+      setCurrentView(view as typeof currentView);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -174,6 +177,12 @@ export default function App() {
             onClearTracked={() => { setActiveTrackingOrder(null); setCurrentView('home'); }}
             currentRegion={currentRegion}
           />
+        )}
+        {currentView === 'login' && (
+          <LoginView onNavigate={(view) => {
+            if (view === 'account') setCurrentView('account');
+            else handleNavigate(view as Parameters<typeof handleNavigate>[0]);
+          }} />
         )}
         {currentView === 'account' && (
           <AccountView

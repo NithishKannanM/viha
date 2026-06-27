@@ -1,12 +1,12 @@
 import React from 'react';
-import { Home, ShoppingBag, Search, Heart, LayoutGrid } from 'lucide-react';
+import { Home, ShoppingBag, UserCircle2, Heart, LayoutGrid } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface MobileBottomNavProps {
   currentView: string;
   cartCount: number;
   wishlistCount: number;
-  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account' | 'beauty') => void;
+  onNavigate: (view: 'home' | 'shop' | 'cart' | 'checkout-info' | 'tracker' | 'account' | 'login' | 'beauty') => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
   onOpenWishlist: () => void;
@@ -16,7 +16,7 @@ interface MobileBottomNavProps {
 const navItems = [
   { id: 'home', icon: Home, label: 'Home' },
   { id: 'categories', icon: LayoutGrid, label: 'Shop' },
-  { id: 'search', icon: Search, label: 'Search' },
+  { id: 'account', icon: UserCircle2, label: 'Account' },
   { id: 'wishlist', icon: Heart, label: 'Saved' },
   { id: 'cart', icon: ShoppingBag, label: 'Cart' },
 ] as const;
@@ -35,7 +35,7 @@ export default function MobileBottomNav({
     switch (id) {
       case 'home': return onNavigate('home');
       case 'categories': return onOpenMenu();
-      case 'search': return onOpenSearch();
+      case 'account': return onNavigate('account');
       case 'wishlist': return onOpenWishlist();
       case 'cart': return onOpenCart();
     }
@@ -44,6 +44,7 @@ export default function MobileBottomNav({
   const isActive = (id: string) => {
     if (id === 'home') return currentView === 'home';
     if (id === 'categories') return currentView === 'shop' || currentView === 'beauty';
+    if (id === 'account') return currentView === 'account' || currentView === 'login';
     return false;
   };
 
