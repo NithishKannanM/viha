@@ -13,6 +13,7 @@ interface BeautyViewProps {
   onSelectCategory: (category: string) => void;
   onAddToCart: (product: Product) => void;
   onViewProduct: (product: Product) => void;
+  onReadArticle: (index: number) => void;
 }
 
 const SectionOrnament = () => (
@@ -124,6 +125,7 @@ const REVIEWS = [
     location: 'Chennai',
     rating: 5,
     product: 'Handmade Red Sandalwood Soap',
+    productId: 'red-sandalwood-handmade-soap',
     content:
       'The sandalwood soap is pure luxury. The fragrance lingers gently and my skin feels smooth without feeling stripped. I\'ve ordered four bars now.',
   },
@@ -132,6 +134,7 @@ const REVIEWS = [
     location: 'Bengaluru',
     rating: 5,
     product: 'Heritage Vetiver Bath Scrub',
+    productId: 'vetiver-root-bath-scrub',
     content:
       'This scrub is the real thing — I\'ve tried so many branded versions and nothing compares. The earthy vetiver scent is completely grounding.',
   },
@@ -140,6 +143,7 @@ const REVIEWS = [
     location: 'Mumbai',
     rating: 5,
     product: 'Divine Jasmine Attar',
+    productId: 'jasmine-attar-rollon',
     content:
       'Alcohol-free, long-lasting, and smells exactly like fresh jasmine garlands. Not sweet, not artificial. This is what attar should be.',
   },
@@ -177,6 +181,7 @@ export default function BeautyView({
   onSelectCategory,
   onAddToCart,
   onViewProduct,
+  onReadArticle,
 }: BeautyViewProps) {
   const [email, setEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
@@ -673,36 +678,59 @@ export default function BeautyView({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {REVIEWS.map((review, idx) => (
-              <div
-                key={idx}
-                className="bg-brand-paper border border-brand-cream-dark rounded-xs p-6 space-y-4 hover:shadow-md transition-shadow"
-              >
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star
-                      key={s}
-                      size={13}
-                      className={
-                        s <= review.rating
-                          ? 'fill-brand-gold text-brand-gold'
-                          : 'text-brand-cream-dark'
-                      }
-                    />
-                  ))}
+            {REVIEWS.map((review, idx) => {
+              const linkedProduct = PRODUCTS.find(p => p.id === review.productId);
+              const handleExplore = () =>
+                linkedProduct ? onViewProduct(linkedProduct) : goToBeautyShop();
+
+              return (
+                <div
+                  key={idx}
+                  className="bg-brand-paper border border-brand-cream-dark rounded-xs p-6 flex flex-col gap-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        size={13}
+                        className={
+                          s <= review.rating
+                            ? 'fill-brand-gold text-brand-gold'
+                            : 'text-brand-cream-dark'
+                        }
+                      />
+                    ))}
+                  </div>
+
+                  <blockquote className="text-sm text-brand-charcoal/85 leading-relaxed italic border-l-2 border-brand-gold pl-4 flex-1">
+                    "{review.content}"
+                  </blockquote>
+
+                  <div className="pt-3 border-t border-brand-cream-dark space-y-3">
+                    <div>
+                      <p className="text-xs font-bold text-brand-charcoal">{review.author}</p>
+                      <p className="text-[10px] text-brand-muted mt-0.5">
+                        {review.location} · Purchased:{' '}
+                        <button
+                          onClick={handleExplore}
+                          className="text-brand-maroon font-semibold hover:text-brand-gold transition-colors cursor-pointer underline underline-offset-2 decoration-brand-maroon/30"
+                        >
+                          {review.product}
+                        </button>
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={handleExplore}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 min-h-[44px] border border-brand-maroon/25 text-brand-maroon hover:bg-brand-maroon hover:text-white text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer rounded-xs group"
+                    >
+                      {linkedProduct ? 'Read Reviews & Explore Product' : 'Browse Collection'}
+                      <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </div>
                 </div>
-                <blockquote className="text-sm text-brand-charcoal/85 leading-relaxed italic border-l-2 border-brand-gold pl-4">
-                  "{review.content}"
-                </blockquote>
-                <div className="pt-2 border-t border-brand-cream-dark">
-                  <p className="text-xs font-bold text-brand-charcoal">{review.author}</p>
-                  <p className="text-[10px] text-brand-muted mt-0.5">
-                    {review.location} · Purchased:{' '}
-                    <span className="text-brand-maroon font-semibold">{review.product}</span>
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-10 text-center">
@@ -746,6 +774,7 @@ export default function BeautyView({
             {JOURNAL_ARTICLES.map((article, idx) => (
               <article
                 key={idx}
+                onClick={() => onReadArticle(idx)}
                 className="group cursor-pointer bg-brand-paper border border-brand-cream-dark border-t-2 border-t-transparent hover:border-t-brand-gold rounded-xs overflow-hidden hover:shadow-md transition-all"
               >
                 <div className="aspect-[16/9] overflow-hidden">

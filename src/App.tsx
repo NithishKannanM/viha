@@ -9,20 +9,28 @@ import AccountView from './components/AccountView';
 import LoginView from './components/LoginView';
 import ProductDetailView from './components/ProductDetailView';
 import BeautyView from './components/BeautyView';
+import BeautyArticleView from './components/BeautyArticleView';
 import MobileBottomNav from './components/MobileBottomNav';
 
 import { Product, CartItem, Order } from './types';
 import { PRODUCTS, MOCK_ORDERS } from './data';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'shop' | 'checkout' | 'tracker' | 'account' | 'login' | 'product' | 'beauty'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'shop' | 'checkout' | 'tracker' | 'account' | 'login' | 'product' | 'beauty' | 'beauty-article'>('home');
   const [checkoutStepView, setCheckoutStepView] = useState<'info' | 'delivery' | 'payment' | 'review' | 'success'>('info');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeProductDetail, setActiveProductDetail] = useState<Product | null>(null);
+  const [activeArticleIndex, setActiveArticleIndex] = useState<number>(0);
 
   const handleViewProduct = (product: Product) => {
     setActiveProductDetail(product);
     setCurrentView('product');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleReadArticle = (index: number) => {
+    setActiveArticleIndex(index);
+    setCurrentView('beauty-article');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -208,6 +216,16 @@ export default function App() {
             onSelectCategory={setSelectedCategory}
             onAddToCart={handleAddToCart}
             onViewProduct={handleViewProduct}
+            onReadArticle={handleReadArticle}
+          />
+        )}
+        {currentView === 'beauty-article' && (
+          <BeautyArticleView
+            articleIndex={activeArticleIndex}
+            onNavigate={handleNavigate}
+            onViewProduct={handleViewProduct}
+            onReadArticle={handleReadArticle}
+            onAddToCart={handleAddToCart}
           />
         )}
       </main>
